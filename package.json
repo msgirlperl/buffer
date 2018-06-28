@@ -6,11 +6,11 @@
   "scripts": {
     "build": "webpack-cli -p ./client/client.js --output ./public/bundle.js",
     "development": "npm run development-server & npm run development-bundle",
-    "development-bundle":
-      "webpack-cli -w --mode development ./client/client.js --output ./public/bundle.js",
+    "development-bundle": "webpack-cli -w --mode development ./client/client.js --output ./public/bundle.js",
     "development-server": "nodemon -w ./server ./server/server.js",
     "start": "node ./server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha **/*.test.js",
+    "test-watch": "nodemon --exec \"npm test\""
   },
   "author": "Dan Farrelly <dan@buffer.com> (https://buffer.com)",
   "repository": {
@@ -19,6 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@bufferapp/components": "2.2.4",
     "express": "^4.16.3",
     "express-static": "^1.2.5",
     "lowdb": "^1.0.0",
@@ -32,11 +33,16 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "expect": "^1.20.2",
+    "mocha": "^3.0.0",
     "nodemon": "^1.17.3",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15"
   },
   "babel": {
-    "presets": ["env", "react"]
+    "presets": [
+      "env",
+      "react"
+    ]
   }
 }
