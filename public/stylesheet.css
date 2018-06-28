@@ -1,0 +1,163 @@
+/*
+  Brand colors
+    #39A4FC blue / primary
+    #2182D5 blue darker / primary dark
+    #56E6BF teal / alternate
+    #33D5AE teal darker / alternate dark
+    #FD684A red / error
+    #FEDF52 yellow / warning
+    #7F42FB purple / fun ;)
+    #1A2634 dark / text
+    #7c858d faded / secondary text
+    #f5f5f5 light grey / borders
+*/
+
+/* box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149); */
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #fff;
+  color: #1A2634;
+}
+
+a {
+  color: #2182D5;
+}
+
+button {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  background-color: #39A4FC;
+  border: 0;
+  border-radius: 0.5em;
+  color: #fff;
+  cursor: pointer;
+}
+
+.logo {
+  margin-bottom: 1em;
+}
+
+.app {
+  height: 100%;
+  max-width: 1000px;
+  margin: auto;
+  padding: 2em;
+}
+
+.main-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.update-list {
+
+}
+
+.update {
+  margin: 0.5em 0;
+  border-radius: 0.5em;
+  border: 2px solid #f5f5f5;
+}
+
+.update-contents {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+.update-text {
+  margin: 0;
+  line-height: 1.4em; /* IDEA - If they pay attention to line height */
+}
+
+.update-image {
+  max-height: 100px;
+  margin-left: 1em;
+}
+
+.update-analytics {
+  padding: 0 1em 1em;
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #7c858d;
+}
+
+.update-analytics-metric {
+  margin-right: 1em;
+}
+
+.update-analytics-metric-icon {
+  margin-right: 0.5em;
+  font-size: 1.1em;
+  line-height: 1em;
+  vertical-align: top;
+}
+
+.update-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  background-color: #f5f5f5;
+  font-size: 0.8em;
+}
+
+.update-list-load-more {
+  margin: 2em 0;
+  text-align: center;
+}
+
+.analytics-chart {
+  display: flex;
+  justify-content: space-between;
+}
+
+.analytics-summary {
+  position: sticky;
+  top: 0.5em;
+  min-width: 200px;
+  margin-top: 0.5em;
+  margin-left: 1em;
+  padding: 1em;
+  border-radius: 0.5em;
+  border: 2px solid #f5f5f5;
+}
+
+.analytics-item {
+  margin-bottom: 1em;
+}
+
+.analytics-item:last-child {
+  margin-bottom: 0;
+}
+
+.analytics-item-value {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.analytics-item:nth-of-type(4n+1) .analytics-item-value {
+  color: #56E6BF;
+}
+.analytics-item:nth-of-type(4n+2) .analytics-item-value {
+  color: #FEDF52;
+}
+.analytics-item:nth-of-type(4n+3) .analytics-item-value {
+  color: #7F42FB;
+}
+.analytics-item:nth-of-type(4n+4) .analytics-item-value {
+  color: #39A4FC;
+}
