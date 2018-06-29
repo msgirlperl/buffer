@@ -34,6 +34,16 @@ app.get('/api/getUpdates', (req, res) => {
   res.json(updates);
 });
 
+app.get('/api/getAnalyticsTimeseries ', (req, res) => {
+  // const updates = db
+  //   .get('updates')
+  //   .orderBy('sent_at', 'desc')
+  //   .slice(0, 10)
+  //   .value();
+
+  res.json(updates);
+});
+
 // Serve static assets in the /public directory
 app.use(
   serve(path.join(__dirname, '../public'), {
@@ -51,3 +61,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+module.exports = app;
