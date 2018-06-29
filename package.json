@@ -10,7 +10,7 @@
       "webpack-cli -w --mode development ./client/client.js --output ./public/bundle.js",
     "development-server": "nodemon -w ./server ./server/server.js",
     "start": "node ./server/server.js",
-    "test": "mocha **/server/*.test.js",
+    "test": "mocha  server/**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
   "author": "Dan Farrelly <dan@buffer.com> (https://buffer.com)",
