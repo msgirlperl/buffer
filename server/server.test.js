@@ -59,51 +59,51 @@ describe('server', function() {
           done();
         });
     });
-    //
-    // it('gets analytics for an update', function(done) {
-    //   chai
-    //     .request(app)
-    //     .get('/api/getUpdates')
-    //     .end(function(err, res) {
-    //       expect(res).to.have.status(200);
-    //       const updates = JSON.parse(res.text);
-    //
-    //       let record = updates['updates'].filter(
-    //         x => x.id === '5ae5562e6739e677334f8cb3'
-    //       );
-    //
-    //       expect(record.clicks).to.equal(115);
-    //       expect(record.retweets).to.equal(7);
-    //       expect(record.favorites).to.equal(5);
-    //
-    //       // let's try another and make sure it's different
-    //       record = updates['updates'].filter(
-    //         x => x.id === '5ae7464a961360877d8b45a8'
-    //       );
-    //
-    //       expect(record.clicks).to.equal(0);
-    //       expect(record.retweets).to.equal(159);
-    //       expect(record.favorites).to.equal(0);
-    //
-    //       done();
-    //     });
-    // });
-    //
+
+    it('gets analytics for an update', function(done) {
+      chai
+        .request(app)
+        .get('/api/getUpdates/0')
+        .end(function(err, res) {
+          expect(res).to.have.status(200);
+          const updates = JSON.parse(res.text).updates;
+
+          let record = updates.filter(
+            x => x.id === '5ae5562e6739e677334f8cb3'
+          )[0];
+
+          expect(record.statistics.clicks).to.equal(115);
+          expect(record.statistics.retweets).to.equal(7);
+          expect(record.statistics.favorites).to.equal(5);
+
+          // let's try another and make sure it's different
+          record = updates.filter(
+            x => x.id === '5ae7464a961360877d8b45a8'
+          )[0];
+
+          expect(record.statistics.clicks).to.equal(0);
+          expect(record.statistics.retweets).to.equal(159);
+          expect(record.statistics.favorites).to.equal(0);
+
+          done();
+        });
+    });
+
     // it('returns 0 if no analytics found', function(done) {
     //   chai
     //     .request(app)
-    //     .get('/api/getUpdates')
+    //     .get('/api/getUpdates/0')
     //     .end(function(err, res) {
     //       expect(res).to.have.status(200);
-    //       const updates = JSON.parse(res.text);
+    //       const updates = JSON.parse(res.text).updates;
     //
-    //       let record = updates['updates'].filter(
+    //       let record = updates.filter(
     //         x => x.id === 'nonexistent_id'
-    //       );
+    //       )[0];
     //
-    //       expect(record.clicks).to.equal(0);
-    //       expect(record.retweets).to.equal(0);
-    //       expect(record.favorites).to.equal(0);
+    //       expect(record.statistics.clicks).to.equal(0);
+    //       expect(record.statistics.retweets).to.equal(0);
+    //       expect(record.statistics.favorites).to.equal(0);
     //
     //       done();
     //     });
@@ -146,7 +146,7 @@ describe('server', function() {
 /*
 This is the list of all the updates from db.json ordered by .'sent_at', 'desc' for test comparison
 
-{ _id: '5ae55aaa3eae5117214f8cb0',
+{"updates": [{ _id: '5ae55aaa3eae5117214f8cb0',
     analytics_last: 1525105181,
     clicks_caveat: false,
     client:
@@ -3166,7 +3166,6 @@ This is the list of all the updates from db.json ordered by .'sent_at', 'desc' f
        name: 'Bonnie Porter Huggins',
        gravatar: 'https://secure.gravatar.com/avatar/e7745239663b65867be63e63e86ba4ba?s=40&d=mm',
        avatar: 'https://secure.gravatar.com/avatar/e7745239663b65867be63e63e86ba4ba?s=80&d=mm' },
-    user_id: '55e11847fa34de7c16bd5fb3' }
-
+    user_id: '55e11847fa34de7c16bd5fb3' }]}
 
 */
