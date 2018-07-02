@@ -8,6 +8,7 @@ const {
   getDayStartFromUnixTimestamp,
   getTimestampSeriesArray
 } = require('./lib/dates');
+const constants = require('./constants');
 
 const app = express();
 const PORT = 8080;
@@ -30,15 +31,12 @@ app.get('/api/getUpdates/:startIndex', (req, res) => {
   let startIndex;
 
   if (!paramStartIndex || paramStartIndex==='0') {
-    console.log('hey');
     startIndex = 0;
     const records = db.get('updates').value();
     numRecords = records.length;
   } else {
      startIndex = parseInt(paramStartIndex);
   }
-
-  console.log('num recos', numRecords);
 
   let updates = db
     .get('updates')
@@ -57,6 +55,10 @@ app.get('/api/getUpdates/:startIndex', (req, res) => {
     total: numRecords,
     updates
   };
+
+  if (updates.length===0) {
+    reply['message'] = constants.NO_MORE_UPDATES;
+  }
 
   res.json(reply);
 });

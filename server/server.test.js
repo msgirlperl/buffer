@@ -1,6 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('./server');
+const constants = require('./constants');
 
 const expect = chai.expect;
 
@@ -47,16 +48,17 @@ describe('server', function() {
           done();
         });
     });
-    // it('responds with there are no more updates', function(done) {
-    //   chai
-    //     .request(app)
-    //     .get('/api/getUpdates/')
-    //     .end(function(err, res) {
-    //       expect(res).to.have.status(200);
-    //       expect(JSON.parse(res.text).length).to.equal(0);
-    //       done();
-    //     });
-    // });
+    it('responds with there are no more updates', function(done) {
+      chai
+        .request(app)
+        .get('/api/getUpdates/60')
+        .end(function(err, res) {
+          expect(res).to.have.status(200);
+          expect(JSON.parse(res.text).updates.length).to.equal(0);
+          expect(JSON.parse(res.text).message).to.equal(constants.NO_MORE_UPDATES);
+          done();
+        });
+    });
     //
     // it('gets analytics for an update', function(done) {
     //   chai
