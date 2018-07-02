@@ -39,9 +39,20 @@ class Store {
   dispatch(action) {
     switch (action.type) {
       case actions.LOAD_UPDATES:
-        Api.get('getUpdates')
-          .then(updates => {
-            this.setState('updates', updates);
+        Api.get('getUpdates/0',)
+          .then(res => {
+            this.setState('updates', res.updates);
+            this.setState('totalCount', res.total);
+            this.setState('startIndex', 0);
+          })
+          .catch(this.handleError)
+        break;
+      case actions.LOAD_MORE_UPDATES:
+        const newStartIndex = this.getState('startIndex') + 10;
+        this.setState('startIndex', newStartIndex);
+        Api.get(`getUpdates/${newStartIndex}`)
+          .then(res => {
+            this.setState('updates', [...this.getState('updates'), ...res.updates]);
           })
           .catch(this.handleError)
         break;
@@ -54,7 +65,6 @@ class Store {
         break;
     }
   }
-
 }
 
 export default Store;

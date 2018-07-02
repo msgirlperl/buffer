@@ -6,11 +6,11 @@
   "scripts": {
     "build": "webpack-cli -p ./client/client.js --output ./public/bundle.js",
     "development": "npm run development-server & npm run development-bundle",
-    "development-bundle":
-      "webpack-cli -w --mode development ./client/client.js --output ./public/bundle.js",
+    "development-bundle": "webpack-cli -w --mode development ./client/client.js --output ./public/bundle.js",
     "development-server": "nodemon -w ./server ./server/server.js",
     "start": "node ./server/server.js",
     "test": "mocha  server/**/*.test.js",
+    "test-server": "mocha server/server.test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
   "author": "Dan Farrelly <dan@buffer.com> (https://buffer.com)",
@@ -38,10 +38,14 @@
     "chai-http": "^4.0.0",
     "mocha": "^3.0.0",
     "nodemon": "^1.17.3",
+    "style-loader": "0.21.0",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15"
   },
   "babel": {
-    "presets": ["env", "react"]
+    "presets": [
+      "env",
+      "react"
+    ]
   }
 }

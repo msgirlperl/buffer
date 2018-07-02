@@ -8,6 +8,7 @@ const store = new Store();
 
 const render = (store) => {
   const props = store.getState()
+
   ReactDOM.render(
     <App
       {...props}

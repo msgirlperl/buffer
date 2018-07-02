@@ -12,8 +12,6 @@ const handleError = response => {
 };
 
 Api.get = (url, data = {}) => {
-  console.log('test');
-  console.log('tes2t');
   const params = new URLSearchParams(data);
   return fetch(`/api/${url}?${params.toString()}`)
     .then(handleError)

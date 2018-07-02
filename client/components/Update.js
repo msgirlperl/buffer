@@ -15,6 +15,7 @@ class Update extends Component {
   }
 
   render() {
+
     return (
       <div className="update">
         <div className="update-contents">

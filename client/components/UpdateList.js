@@ -8,6 +8,7 @@ class UpdateList extends Component {
     if (!this.props.updates || !this.props.updates.length) {
       return <p>You have no updates</p>
     }
+    
     return (
       <div className="update-list">
         {this.props.updates.map((update, idx) => (
@@ -17,8 +18,7 @@ class UpdateList extends Component {
           />
         ))}
       </div>
-    )
-    return
+    );
   }
 }
 

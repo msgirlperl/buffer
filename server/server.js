@@ -24,14 +24,41 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
-app.get('/api/getUpdates', (req, res) => {
-  const updates = db
+app.get('/api/getUpdates/:startIndex', (req, res) => {
+  let numRecords;
+  const paramStartIndex = req.params.startIndex;
+  let startIndex;
+
+  if (!paramStartIndex || paramStartIndex==='0') {
+    console.log('hey');
+    startIndex = 0;
+    const records = db.get('updates').value();
+    numRecords = records.length;
+  } else {
+     startIndex = parseInt(paramStartIndex);
+  }
+
+  console.log('num recos', numRecords);
+
+  let updates = db
     .get('updates')
     .orderBy('sent_at', 'desc')
-    .slice(0, 10)
+    .slice(startIndex, startIndex + 10)
     .value();
 
-  res.json(updates);
+  updates.forEach(update => {
+    update['statistics'] = db
+      .get('updates-analytics')
+      .find({ update_id: update.id })
+      .value();
+  });
+
+  const reply = {
+    total: numRecords,
+    updates
+  };
+
+  res.json(reply);
 });
 
 app.get('/api/getAnalyticsTimeseries ', (req, res) => {
