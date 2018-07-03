@@ -4,6 +4,8 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const updateAnalyticsData = require('./updateAnalyticsData');
 
+const request = require('request')
+
 const expect = chai.expect;
 
 const adapter = new FileSync(path.join(__dirname, '../database/db.json'));
@@ -19,12 +21,16 @@ describe('updateAnalyticsData', function() {
       //           .value();
       //
 
-      const tweets = updateAnalyticsData.fetchLatestTweetsIntoDB();
-      // const updates = JSON.parse(res.text);
-      // //expect(updates.length).to.equal(10);
-      // expect(updates).length(10);
-      // expect(updates[0].id).to.equal('5ae55aaa3eae5117214f8cb0');
-      // expect(updates[9].id).to.equal('5adc50d93146d15c33ee7fbf');
+      request('https://jsonplaceholder.typicode.com/users', { json: true }, (err, res, body) => {
+  if (err) { return console.log(err); }
+  console.log(res);
+  console.log(body);
+});
+
+
+  //    const tweets = updateAnalyticsData.fetchLatestTweetsIntoDB();
+      //console.log(tweets);
+
       done();
     });
   });

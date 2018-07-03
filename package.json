@@ -11,6 +11,7 @@
     "start": "node ./server/server.js",
     "test": "mocha  server/**/*.test.js",
     "test-server": "mocha server/server.test.js",
+    "test-analytics": "mocha server/scripts/updateAnalyticsData.test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
   "author": "Dan Farrelly <dan@buffer.com> (https://buffer.com)",
@@ -27,7 +28,8 @@
     "morgan": "^1.9.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-vis": "^1.9.3"
+    "react-vis": "^1.9.3",
+    "request": "^2.87.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
