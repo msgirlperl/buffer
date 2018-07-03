@@ -11,26 +11,44 @@ const expect = chai.expect;
 const adapter = new FileSync(path.join(__dirname, '../database/db.json'));
 const db = low(adapter);
 
+const wipeOutAnalytics = () => {
+  db
+    .get('updates-analytics')
+    .each(item => {
+      item.retweets = 0;
+      item.favorites = 0;
+      item.clicks = 0;
+    })
+    .write();
+};
+
+const verifyZeroedAnalytics = () => {
+
+  return db
+    .get('updates-analytics')
+    .filter({
+      retweets: 0,
+      favorites: 0,
+      clicks: 0})
+    .value()
+    .length === 60;
+};
+
 describe('updateAnalyticsData', function() {
   describe('fetchLatestTweetsIntoDB', function() {
-    it('should fetch and save most recent tweets', function(done) {
-      // confirm valid baseline:
-      // db
-      //   .get('updates-analytics')
-      //   .find({id: })
-      //           .value();
-      //
+    it('should fetch and save most recent tweets', async function(done) {
 
-      request('https://jsonplaceholder.typicode.com/users', { json: true }, (err, res, body) => {
-  if (err) { return console.log(err); }
-  console.log(res);
-  console.log(body);
-});
+      wipeOutAnalytics();
+      if (verifyZeroedAnalytics()){
+        console.log('valid testbed');
+      } else {
+        console.log('***INVALID TESTBED!***');
+        expect(0).to.equal(1);
+      }
 
-
-  //    const tweets = updateAnalyticsData.fetchLatestTweetsIntoDB();
+      await updateAnalyticsData.fetchLatestTweetsIntoDB();
       //console.log(tweets);
-
+      expect(verifyZeroedAnalytics()).to.be.false;
       done();
     });
   });
