@@ -3,6 +3,7 @@ const serve = require('express-static');
 const morgan = require('morgan');
 const path = require('path');
 const low = require('lowdb');
+const _ = require('lodash');
 const FileSync = require('lowdb/adapters/FileSync');
 const {
   getDayStartFromUnixTimestamp,
@@ -25,6 +26,8 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
+// Gets updates and update analytics, in increments of 10 records starting at startIndex, sorted
+// by most recent sent_at date
 app.get('/api/getUpdates/:startIndex', (req, res) => {
   let numRecords;
   const paramStartIndex = req.params.startIndex;
@@ -63,14 +66,56 @@ app.get('/api/getUpdates/:startIndex', (req, res) => {
   res.json(reply);
 });
 
-app.get('/api/getAnalyticsTimeseries ', (req, res) => {
-  // const updates = db
-  //   .get('updates')
-  //   .orderBy('sent_at', 'desc')
-  //   .slice(0, 10)
-  //   .value();
+// Returns a timeseries of all updates aggregated by day that the update was sent
+app.get('/api/getAnalyticsTimeseries', (req, res) => {
 
-  res.json(updates);
+  /*
+      1. Get all updates and update-analytics
+      2. Get first and last update's "dayStart",
+      3. Get getTimestampSeriesArray, passing in these bounds and create the
+          stubbed-out array to return
+      4. Iterate over each update, look up it's analytics, and append them to
+          the corresponding object's counts in the seriesTS array
+  */
+
+  const allUpdates = db
+    .get('updates')
+    .orderBy('sent_at', 'asc')
+    .value();
+
+  const allAnalytics = db
+    .get('updates-analytics')
+    .value();
+
+  const startTS = getDayStartFromUnixTimestamp(allUpdates[0].sent_at);
+  const endTS = getDayStartFromUnixTimestamp(allUpdates[allUpdates.length-1].sent_at);
+
+  const seriesTS = getTimestampSeriesArray(startTS, endTS)
+    .map( ts => {
+      return {
+        timestamp : ts,
+        retweets: 0,
+        favorites: 0,
+        clicks: 0
+     }
+   });
+
+  allUpdates.forEach(update => {
+
+    const analytics = allAnalytics.find(x => x.update_id === update.id);
+
+    const ts = getDayStartFromUnixTimestamp(update.sent_at);
+    const index = _.findIndex(seriesTS, (x) => x.timestamp === ts);
+
+    seriesTS[index].retweets += analytics.retweets;
+    seriesTS[index].favorites += analytics.favorites;
+    seriesTS[index].clicks += analytics.clicks;
+
+  });
+
+  res.json(
+    seriesTS
+  );
 });
 
 // Serve static assets in the /public directory

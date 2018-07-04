@@ -68,18 +68,18 @@ describe('server', function() {
           expect(res).to.have.status(200);
           const updates = JSON.parse(res.text).updates;
 
-          let record = updates.filter(
+          let record = updates.find(
             x => x.id === '5ae5562e6739e677334f8cb3'
-          )[0];
+          );
 
           expect(record.statistics.clicks).to.equal(115);
           expect(record.statistics.retweets).to.equal(7);
           expect(record.statistics.favorites).to.equal(5);
 
           // let's try another and make sure it's different
-          record = updates.filter(
+          record = updates.find(
             x => x.id === '5ae7464a961360877d8b45a8'
-          )[0];
+          );
 
           expect(record.statistics.clicks).to.equal(0);
           expect(record.statistics.retweets).to.equal(159);
@@ -97,9 +97,9 @@ describe('server', function() {
     //       expect(res).to.have.status(200);
     //       const updates = JSON.parse(res.text).updates;
     //
-    //       let record = updates.filter(
+    //       let record = updates.find(
     //         x => x.id === 'nonexistent_id'
-    //       )[0];
+    //       );
     //
     //       expect(record.statistics.clicks).to.equal(0);
     //       expect(record.statistics.retweets).to.equal(0);
@@ -110,37 +110,36 @@ describe('server', function() {
     // });
   });
 
-  // describe('getAnalyticsTimeseries endpoint', function() {
-  //   it('returns update analytics per update, per day', function(done) {
-  //     chai
-  //       .request(app)
-  //       .get('/api/getAnalyticsTimeseries')
-  //       .end(function(err, res) {
-  //         expect(res).to.have.status(200);
-  //
-  //         const updates = JSON.parse(res.text);
-  //
-  //         //TODO: what will this JSON look like and what data can we expect?
-  //         let record = updates['updates'].filter(
-  //           x => x.id === '5ae5562e6739e677334f8cb3'
-  //         );
-  //
-  //         expect(record.clicks).to.equal(115);
-  //         expect(record.retweets).to.equal(7);
-  //         expect(record.favorites).to.equal(5);
-  //
-  //         // let's try another and make sure it's different
-  //         record = updates['updates'].filter(
-  //           x => x.id === '5ae7464a961360877d8b45a8'
-  //         );
-  //
-  //         expect(record.clicks).to.equal(0);
-  //         expect(record.retweets).to.equal(159);
-  //         expect(record.favorites).to.equal(0);
-  //         done();
-  //       });
-  //   });
-  // });
+  describe('getAnalyticsTimeseries endpoint', function() {
+    it('returns update analytics per update, per day', function(done) {
+      chai
+        .request(app)
+        .get('/api/getAnalyticsTimeseries')
+        .end(function(err, res) {
+          expect(res).to.have.status(200);
+
+          const timestampSeries = JSON.parse(res.text);
+
+          let record = timestampSeries.find(
+            x => x.timestamp === 1524614400
+          );
+
+          expect(record.clicks).to.equal(260);
+          expect(record.retweets).to.equal(87);
+          expect(record.favorites).to.equal(280);
+
+          // let's try another and make sure it's different
+          record = timestampSeries.find(
+            x => x.timestamp === 1524960000
+          );
+
+          expect(record.clicks).to.equal(188);
+          expect(record.retweets).to.equal(45);
+          expect(record.favorites).to.equal(61);
+          done();
+        });
+    });
+  });
 });
 
 /*
