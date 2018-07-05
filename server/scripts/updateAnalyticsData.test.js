@@ -2,26 +2,25 @@ const chai = require('chai');
 const path = require('path');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
-const updateAnalyticsData = require('./updateAnalyticsData');
-
 const request = require('request')
-//
-// process.on('unhandledRejection', (reason, p) => { throw reason });
-
 const expect = chai.expect;
+const updateAnalyticsData = require('./updateAnalyticsData');
 
 const adapter = new FileSync(path.join(__dirname, '../database/db.json'));
 const db = low(adapter);
 
 const wipeOutAnalytics = (done) => {
-  db
-    .get('updates-analytics')
-    .each(item => {
-      item.retweets = 0;
-      item.favorites = 0;
-      item.clicks = 0;
-    })
-    .write();
+  return new Promise((resolve, reject) => {
+    db
+      .get('updates-analytics')
+      .each(item => {
+        item.retweets = 0;
+        item.favorites = 0;
+        item.clicks = 0;
+      })
+      .write();
+    resolve();
+  });
 };
 
 const verifyZeroedAnalytics = () => {
@@ -38,43 +37,44 @@ const verifyZeroedAnalytics = () => {
 
 const fetchTweetsMock = (tweetId) => {
 
-  switch(tweetId)
-  {
-    case '989176218183401473':
-      return {
-        id: "989176218183401473",
-        screen_name: "buffer",
-        text: "Q2: How could Snapchat fit into a social media marketing strategy? #bufferchat",
-        retweet_count: 3,
-        favorite_count: 16,
-        click_count: 8
-        };
-    case '988976810892382208':
-      return {
-        "id": "988976810892382208",
-        "screen_name": "buffer",
-        "text": "Want to travel the world? 7 bucket-list trips you can take without draining your bank account ✈️🌍",
-        "retweet_count": 7,
-        "favorite_count": 20,
-        "click_count": 1
-      };
-    default:
-      return {
-        "id": tweetId,
-        "screen_name": "buffer",
-        "text": "",
-        "retweet_count": 0,
-        "favorite_count": 0,
-        "click_count": 0
-      };
-  }
+  return new Promise((resolve, reject) => {
+    switch(tweetId) {
+      case '989176218183401473':
+        resolve({
+          id: "989176218183401473",
+          screen_name: "buffer",
+          text: "Q2: How could Snapchat fit into a social media marketing strategy? #bufferchat",
+          retweet_count: 3,
+          favorite_count: 16,
+          click_count: 8
+        });
+      case '988976810892382208':
+        resolve({
+          "id": "988976810892382208",
+          "screen_name": "buffer",
+          "text": "Want to travel the world? 7 bucket-list trips you can take without draining your bank account ✈️🌍",
+          "retweet_count": 7,
+          "favorite_count": 20,
+          "click_count": 1
+        });
+      default:
+        resolve({
+          "id": tweetId,
+          "screen_name": "buffer",
+          "text": "",
+          "retweet_count": 0,
+          "favorite_count": 0,
+          "click_count": 0
+        });
+    }
+  });
 };
 
 describe('updateAnalyticsData', function() {
   describe('fetchLatestTweetAnalyticsIntoDB', function() {
     it('should fetch and save most recent tweets', function(done) {
 
-      // wipeOutAnalytics();
+      //wipeOutAnalytics();
       updateAnalyticsData.fetchLatestTweetAnalyticsIntoDB(fetchTweetsMock);
 
       // update_id: 5addbf19ae6b58330e375aef
@@ -91,9 +91,9 @@ describe('updateAnalyticsData', function() {
         .find({_id: '5afef19c8bc4439870ed9844'})
         .value();
 
-     expect(test1.favorites).to.equal(16);
-     expect(test1.clicks).to.equal(8);
-     expect(test1.retweets).to.equal(3);
+      expect(test1.favorites).to.equal(16);
+      expect(test1.clicks).to.equal(8);
+      expect(test1.retweets).to.equal(3);
 
       expect(test2.favorites).to.equal(20);
       expect(test2.clicks).to.equal(1);
