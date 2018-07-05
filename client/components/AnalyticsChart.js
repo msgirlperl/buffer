@@ -30,12 +30,8 @@ class AnalyticsChart extends Component {
       clicks: '#56E6BF',
     }
 
-    const rawData = this.props.analyticsTimeseries ? this.props.analyticsTimeseries : []
-    const timeseries = rawData.map(item => {
-      // turn unix timestamp into javascript millisecond timestamp
-      item.timestamp = item.timestamp * 1000
-      return item
-    })
+    const timeseries = this.props.analyticsTimeseries ? this.props.analyticsTimeseries : []
+
     const timestamps = timeseries.map(d => d.timestamp)
     const retweets = timeseries.map(d => ({ x: d.timestamp, y: d.retweets }))
     const favorites = timeseries.map(d => ({ x: d.timestamp, y: d.favorites }))

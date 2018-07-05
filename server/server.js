@@ -114,7 +114,11 @@ app.get('/api/getAnalyticsTimeseries', (req, res) => {
   });
 
   res.json(
-    seriesTS
+    seriesTS.map(item => {
+        // turn unix timestamp into javascript millisecond timestamp
+        item.timestamp = item.timestamp * 1000
+        return item
+      })
   );
 });
 
