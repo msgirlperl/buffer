@@ -87,27 +87,7 @@ describe('server', function() {
 
           done();
         });
-    });
-
-    // it('returns 0 if no analytics found', function(done) {
-    //   chai
-    //     .request(app)
-    //     .get('/api/getUpdates/0')
-    //     .end(function(err, res) {
-    //       expect(res).to.have.status(200);
-    //       const updates = JSON.parse(res.text).updates;
-    //
-    //       let record = updates.find(
-    //         x => x.id === 'nonexistent_id'
-    //       );
-    //
-    //       expect(record.statistics.clicks).to.equal(0);
-    //       expect(record.statistics.retweets).to.equal(0);
-    //       expect(record.statistics.favorites).to.equal(0);
-    //
-    //       done();
-    //     });
-    // });
+    });    
   });
 
   describe('getAnalyticsTimeseries endpoint', function() {
