@@ -9,7 +9,7 @@ const updateAnalyticsData = require('./updateAnalyticsData');
 const adapter = new FileSync(path.join(__dirname, '../database/db.json'));
 const db = low(adapter);
 
-const wipeOutAnalytics = (done) => {
+const wipeOutAnalytics = () => {
   return new Promise((resolve, reject) => {
     db
       .get('updates-analytics')

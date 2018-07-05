@@ -87,7 +87,7 @@ describe('server', function() {
 
           done();
         });
-    });    
+    });   
   });
 
   describe('getAnalyticsTimeseries endpoint', function() {
@@ -101,7 +101,7 @@ describe('server', function() {
           const timestampSeries = JSON.parse(res.text);
 
           let record = timestampSeries.find(
-            x => x.timestamp === 1524614400
+            x => x.timestamp === 1524614400000
           );
 
           expect(record.clicks).to.equal(260);
@@ -110,7 +110,7 @@ describe('server', function() {
 
           // let's try another and make sure it's different
           record = timestampSeries.find(
-            x => x.timestamp === 1524960000
+            x => x.timestamp === 1524960000000
           );
 
           expect(record.clicks).to.equal(188);
